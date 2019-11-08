@@ -85,9 +85,7 @@ def export_excel(name, result):
         # 对result的每个子元素作遍历，
         for j in xrange(len(result[i])):
             # 将每一行的每个元素按行号i,列号j,写入到excel中。
-            sheet.write(i, j, result[i].values().__getitem__(j))
-    # 以传递的name+当前日期作为excel名称保存。
-    wbk.save(name + str(today_date) + '.xls')
+            print result[i].values().__getitem__(j)
 
 
 if __name__ == '__main__':
