@@ -36,7 +36,7 @@ for entry in result['log']['entries']:
 
 
 
-time.sleep(5)
+time.sleep(20)
 
 js = 'document.getElementsByClassName("_367BRJY7OL8RJUjxqVmLe8")[0].click()'
 
@@ -54,10 +54,16 @@ for entry in result['log']['entries']:
         # 获取接口返回内容
         print(_content)
 
+time.sleep(20)
 
-result2 = proxy.new_har()
+js = 'document.getElementsByClassName("_367BRJY7OL8RJUjxqVmLe8")[2].click()'
 
-for entry in result2['log']['entries']:
+driver.execute_script(js)
+
+
+result = proxy.har
+
+for entry in result['log']['entries']:
     _url = entry['request']['url']
     # 根据URL找到数据接口
     print _url
@@ -66,3 +72,6 @@ for entry in result2['log']['entries']:
         _content = _response['content']['text']
         # 获取接口返回内容
         print(_content)
+
+result = proxy.har
+print 1111

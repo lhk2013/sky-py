@@ -35,7 +35,24 @@ proxy.new_har("meituan", options={'captureHeaders': True, 'captureContent': True
 
 browser.get(base_url)
 
-result = proxy.har
+
+
+time.sleep(3)
+
+
+
+# lst = browser.find_elements_by_class_name("_367BRJY7OL8RJUjxqVmLe8")
+
+
+
+
+jsClick = 'document.getElementsByClassName("_367BRJY7OL8RJUjxqVmLe8")[%s].click()' % (2)
+browser.execute_script(jsClick)
+jsScroll = 'document.getElementsByClassName("_3Eh5JLsA7ZO_myNmJgO9cv")[0].scrollTop=80000'
+browser.execute_script(jsScroll)
+
+
+result = proxy.har()
 
 for entry in result['log']['entries']:
     _url = entry['request']['url']
@@ -47,32 +64,7 @@ for entry in result['log']['entries']:
         # 获取接口返回内容
         print(_content)
 
-result = proxy.har
-print 1111
-
-time.sleep(20)
-
-js = 'document.getElementsByClassName("_367BRJY7OL8RJUjxqVmLe8")[2].click()'
-
-browser.execute_script(js)
-
-
-result = proxy.har
-
-for entry in result['log']['entries']:
-    _url = entry['request']['url']
-    # 根据URL找到数据接口
-    print _url
-    if "/openh5/poi/menuproducts" in _url:
-        _response = entry['response']
-        _content = _response['content']['text']
-        # 获取接口返回内容
-        print(_content)
-
-result = proxy.har
-print 2222
-
-
-proxy.close()
+time.sleep(5)
 browser.quit()
+proxy.close()
 
