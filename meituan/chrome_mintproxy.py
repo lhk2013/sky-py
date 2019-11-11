@@ -21,7 +21,7 @@ cursor = db.connection.cursor()
 
 
 pageCategoryMap = {}
-
+woffPath = None
 
 def init():
     server = Server(r'E:\work\browsermob-proxy-2.1.4\bin\browsermob-proxy.bat')
@@ -46,14 +46,30 @@ def init():
 
     browser.get(base_url)
 
+    browser.find_element_by_tag_name("style")
+
     jsScroll = 'document.getElementsByClassName("_3Eh5JLsA7ZO_myNmJgO9cv")[0].scrollTop=80000'
     time.sleep(10)
     browser.execute_script(jsScroll)
     time.sleep(5)
 
+    ## 获取字体
+    result = proxy.har
+    for entry in result['log']['entries']:
+        _url = entry['request']['url']
+        if ".woff" in _url:
+            print _url
+
+            r = requests.get(_url)
+            filePath = _url[_url.rindex("/")+1:_url.__len__()]
+            with open(filePath, "wb") as f:
+                f.write(r.content)
+                global  woffPath
+                woffPath = filePath
+
 
     tags = browser.find_elements_by_class_name("_367BRJY7OL8RJUjxqVmLe8")
-    for index in range(1,1):
+    for index in range(1,len(tags)):
         jsClick = 'document.getElementsByClassName("_367BRJY7OL8RJUjxqVmLe8")[%s].click()' % (index)
         # js = 'document.getElementsByClassName("_367BRJY7OL8RJUjxqVmLe8")[2].click()'
         browser.execute_script(jsClick)
@@ -95,7 +111,6 @@ def init():
             if result['data'].has_key('categoryList'):
                 parseDiscountSpuData(result['data']['categoryList'])
 
-
     print "<<<<<<<<<<<<<<<<<<<解析完毕>>>>>>>>>>>>>>>>"
     time.sleep(10)
     proxy.close()
@@ -129,7 +144,7 @@ def parseSaveData(result, tagName):
     today = datetime.today()
     today_date = datetime.date(today)
 
-    parseDict = fontutils.parseWoff()
+    parseDict = fontutils.parseWoff(woffPath)
 
     for i in xrange(len(result)):
         # 对result的每个子元素作遍历，
