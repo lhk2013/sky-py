@@ -41,7 +41,7 @@ def init():
     # chrome_options.add_experimental_option('prefs', prefs)
     browser = webdriver.Chrome(chrome_options=chrome_options)
 
-    base_url = "https://h5.waimai.meituan.com/waimai/mindex/menu?mtShopId=934294019092390&initialLat=23.125207&initialLng=113.302035&actualLat=31.201409&actualLng=121.58195&source=searchresult"
+    base_url = "https://h5.waimai.meituan.com/waimai/mindex/menu?mtShopId=986722685149968&utm_source=5913"
     proxy.new_har("meituan", options={'captureHeaders': True, 'captureContent': True})
 
     browser.get(base_url)
@@ -69,7 +69,7 @@ def init():
 
 
     tags = browser.find_elements_by_class_name("_367BRJY7OL8RJUjxqVmLe8")
-    for index in range(1,len(tags)):
+    for index in range(1,1):
         jsClick = 'document.getElementsByClassName("_367BRJY7OL8RJUjxqVmLe8")[%s].click()' % (index)
         # js = 'document.getElementsByClassName("_367BRJY7OL8RJUjxqVmLe8")[2].click()'
         browser.execute_script(jsClick)
@@ -163,6 +163,7 @@ def parseSaveData(result, tagName):
                     item["tagName"] = pageCategoryMap[tag]
                 item["spuId"] = result[i]["spuId"]
                 item["spuName"] = result[i]["spuName"]
+                item["spuPromotionInfo"] = result[i]["spuPromotionInfo"]
 
 
 
@@ -174,6 +175,7 @@ def parseSaveData(result, tagName):
                 item["spec"] =sku["spec"]
                 item["originPrice"] =sku["originPrice"]
                 item["currentPrice"] =sku["currentPrice"]
+
 
                 discount = result[i]["activityPolicy"]["discountByCount"]
                 item["discount"] = discount["discount"]
@@ -191,7 +193,7 @@ def save_subject(item):
     values = tuple(item.values())
     fields = ','.join(keys)
     temp = ','.join(['%s'] * len(keys))
-    sql = 'INSERT INTO meituan (%s) VALUES (%s)' % (fields, temp)
+    sql = 'INSERT INTO meituan1 (%s) VALUES (%s)' % (fields, temp)
     print sql
     print values
     cursor.execute(sql, values)
